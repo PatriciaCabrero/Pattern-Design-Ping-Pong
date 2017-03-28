@@ -2,6 +2,8 @@
 #include "BounceOnBorders.h"
 #include "RectRender.h"
 #include "ImageRendered.h"
+#include "StopOnBordersPhysics.h"
+#include "PaddleKeyboardInputComp.h"
 
 PingPong::PingPong() :
 		SDLGame("Ping Pong", _WINDOW_WIDTH_, _WINDOW_HEIGHT_) {
@@ -24,7 +26,9 @@ void PingPong::initGame() {
 	imageRenderer_ = new ImageRendered( getResources()->getTexture(SDLGame::TennisBall) );
 
 	bounceOnBorderPhysics_ = new BounceOnBorders(true, true, true, true);
-
+	stopOnBorderPhysics_ = new StopOnBordersPhysics(false, false, true, true);
+	leftInputKeyboard_ = new PaddleKeyboardInputComp(SDLK_w,SDLK_s, SDLK_SPACE, 5);
+	rightInputKeyboard_ = new PaddleKeyboardInputComp(SDLK_UP, SDLK_DOWN, SDLK_RSHIFT, 5);
 	// ball
 	ball_ = new GameComponent(this);
 	ball_->setWidth(10);
@@ -34,11 +38,12 @@ void PingPong::initGame() {
 			ball_->getGame()->getWindowWidth() / 2 - ball_->getWidth() / 2,
 			ball_->getGame()->getWindowHeight() / 2 - ball_->getHeight() / 2);
 	ball_->setPhysicsComponent(bounceOnBorderPhysics_);
-	ball_->setRenderComponent(rectangleRenderer_);
 
+	ball_->setRenderComponent(rectangleRenderer_);
 	// use the following for an image of a tennis ball
 	// ball_->setRenderComponent(imageRenderer_);
 
+	
 
 	// left paddle
 	left_paddle_ = new GameComponent(this);
@@ -48,6 +53,9 @@ void PingPong::initGame() {
 			(getWindowHeight() - left_paddle_->getHeight()) / 2);
 	left_paddle_->setDirection(0, 0);
 	left_paddle_->setRenderComponent(rectangleRenderer_);
+	
+	left_paddle_->setPhysicsComponent(stopOnBorderPhysics_);
+	left_paddle_->setInputComponent(leftInputKeyboard_);
 
 	// right paddle
 	right_paddle_ = new GameComponent(this);
@@ -57,6 +65,9 @@ void PingPong::initGame() {
 			(getWindowHeight() - right_paddle_->getHeight()) / 2);
 	right_paddle_->setDirection(0, 0);
 	right_paddle_->setRenderComponent(rectangleRenderer_);
+	
+	right_paddle_->setPhysicsComponent(stopOnBorderPhysics_);
+	right_paddle_->setInputComponent(rightInputKeyboard_);
 
 	// game manager
 	gameManager_ = new GameManager(this);
@@ -74,6 +85,9 @@ void PingPong::closeGame() {
 	delete rectangleRenderer_;
 	delete imageRenderer_;
 	delete bounceOnBorderPhysics_;
+	delete stopOnBorderPhysics_;
+	delete leftInputKeyboard_;
+	delete rightInputKeyboard_;
 }
 
 void PingPong::start() {

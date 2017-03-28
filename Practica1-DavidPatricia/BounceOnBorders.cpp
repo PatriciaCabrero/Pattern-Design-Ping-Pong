@@ -16,7 +16,7 @@ void BounceOnBorders::init(GameObject* o) {
 void BounceOnBorders::update(GameObject* o) {
 	Vector2D<int> nextPos = o->getPosition() + o->getDirection();
 
-// check if we exit from top/bottpm
+// check if we exit from top/bottom
 	if (top_ && nextPos.getY() <= 0) {
 		nextPos.setY(0);
 		o->setPosition(nextPos);
