@@ -1,4 +1,4 @@
-#ifndef PADDLEAIPHYSICS_H_
+﻿#ifndef PADDLEAIPHYSICS_H_
 #define PADDLEAIPHYSICS_H_
 
 #include "PhysicsComponent.h"

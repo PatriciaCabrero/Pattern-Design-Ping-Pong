@@ -20,6 +20,9 @@ void GameManager::update() {
 }
 
 void GameManager::handleInput(const SDL_Event& event) {
+	/*if (event.key.keysym.sym == SDLK_SPACE){
+		game_->start();
+	}*/
 }
 
 void GameManager::render() {

@@ -4,6 +4,9 @@
 #include "ImageRendered.h"
 #include "StopOnBordersPhysics.h"
 #include "PaddleKeyboardInputComp.h"
+#include "PaddleMouseInputComp.h"
+#include "PaddleAIPhysics.h"
+
 
 PingPong::PingPong() :
 		SDLGame("Ping Pong", _WINDOW_WIDTH_, _WINDOW_HEIGHT_) {
@@ -27,8 +30,11 @@ void PingPong::initGame() {
 
 	bounceOnBorderPhysics_ = new BounceOnBorders(true, true, true, true);
 	stopOnBorderPhysics_ = new StopOnBordersPhysics(false, false, true, true);
-	leftInputKeyboard_ = new PaddleKeyboardInputComp(SDLK_w,SDLK_s, SDLK_SPACE, 5);
-	rightInputKeyboard_ = new PaddleKeyboardInputComp(SDLK_UP, SDLK_DOWN, SDLK_RSHIFT, 5);
+	leftInputKeyboard_ = new PaddleKeyboardInputComp(SDLK_a, SDLK_z, SDLK_s, 5);
+	//rightInputKeyboard_ = new PaddleMouseInputComp();
+	rightInputKeyboard_ = new PaddleKeyboardInputComp(SDLK_UP, SDLK_DOWN,  SDLK_SPACE, 5);
+	//aiPaddlePhysics_ = new PaddleAIPhysics(ball_);
+
 	// ball
 	ball_ = new GameComponent(this);
 	ball_->setWidth(10);
