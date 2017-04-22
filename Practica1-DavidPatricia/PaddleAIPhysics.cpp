@@ -15,14 +15,18 @@ void PaddleAIPhysics::update(GameObject* paddle) {
 	if (ball_->getPosition().getX() <= paddle->getPosition().getX()){//PALA DERECHA
 		if (ball_->getDirection().getX() > 0)//Me estoy acercando
 		{
-			int  y_pred​;
+			paddle->setPositionY(ball_->getPosition().getY());
+			/*int  y_pred​;
 			int dist = paddle->getPosition().getX()- ball_->getPosition().getX();
-			int tiempo = ball_->getDirection().getX() / dist;
-			y_pred​ = tiempo* paddle->getDirection().getY();
-			if ((y_pred​ < paddle->getPosition().getY() && paddle->getDirection().getY() > 0) || 
-				(y_pred​ > paddle->getPosition().getY() && paddle->getDirection().getY() < 0)){
-				paddle->setDirectionY(-paddle->getDirection().getY());
-			}
+			if (dist != 0) {
+				int tiempo = ball_->getDirection().getX() / dist;
+				y_pred​ = tiempo* paddle->getDirection().getY();
+				if ((y_pred​ < paddle->getPosition().getY() && paddle->getDirection().getY() > 0) ||
+					(y_pred​ > paddle->getPosition().getY() && paddle->getDirection().getY() < 0)) {
+					paddle->setDirectionY(-paddle->getDirection().getY());
+					std::cout << paddle->getDirection().getY() << "\n";
+				}
+			}*/
 
 		}
 		else//Me alejo
@@ -31,6 +35,7 @@ void PaddleAIPhysics::update(GameObject* paddle) {
 				(paddle->getPosition().getY() > paddle->getGame()->getWindowHeight() / 2 && paddle->getDirection().getY() > 0)){
 				paddle->setDirectionY(-paddle->getDirection().getY());
 			}
+			paddle->setPosition(paddle->getPosition() + paddle->getDirection());
 		}
 	
 	}
@@ -38,15 +43,19 @@ void PaddleAIPhysics::update(GameObject* paddle) {
 	{
 		if (ball_->getDirection().getX() < 0)//Me estoy acercando
 		{
+			paddle->setPositionY(ball_->getPosition().getY());
+			/*
 			int  y_pred​;
 			int dist = paddle->getPosition().getX() - ball_->getPosition().getX();
-			int tiempo = ball_->getDirection().getX() / dist;
-			y_pred​ = tiempo* paddle->getDirection().getY();
-			if ((y_pred​ < paddle->getPosition().getY() && paddle->getDirection().getY() > 0) ||
-				(y_pred​ > paddle->getPosition().getY() && paddle->getDirection().getY() < 0)){
-				paddle->setDirectionY(-paddle->getDirection().getY());
-			}
-
+			if (dist != 0) {
+				int tiempo = ball_->getDirection().getX() / dist;
+				y_pred​ = tiempo* paddle->getDirection().getY();
+				if ((y_pred​ < paddle->getPosition().getY() && paddle->getDirection().getY() > 0) ||
+					(y_pred​ > paddle->getPosition().getY() && paddle->getDirection().getY() < 0)) {
+					paddle->setDirectionY(-paddle->getDirection().getY());
+					
+				}
+			}*/
 		}
 		else //Me alejo
 		{
@@ -54,6 +63,7 @@ void PaddleAIPhysics::update(GameObject* paddle) {
 				(paddle->getPosition().getY() > paddle->getGame()->getWindowHeight() / 2 && paddle->getDirection().getY() > 0)){
 				paddle->setDirectionY(- paddle->getDirection().getY());
 			}
+			paddle->setPosition(paddle->getPosition() + paddle->getDirection());
 		}
 	}
 }

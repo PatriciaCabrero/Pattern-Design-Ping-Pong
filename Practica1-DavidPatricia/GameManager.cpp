@@ -11,6 +11,7 @@ GameManager::GameManager(SDLGame* game) :
 	SDL_Color color = { 255, 255, 255, 255 };
 	startMsgTexture_.loadFromText(getGame()->getRenderer(),
 			"Press Space to Start", *font_, color);
+	score1 = score2 = 0;
 }
 
 GameManager::~GameManager() {
@@ -29,13 +30,21 @@ void GameManager::render() {
 
 	// just an example, should be adjusted to the requirements!
 	startMsgTexture_.render(getGame()->getRenderer(), (getGame()->getWindowWidth()-startMsgTexture_.getWidth())/ 2, getGame()->getWindowHeight()-40);
+	puntuaciones.render(getGame()->getRenderer(), (getGame()->getWindowWidth() - puntuaciones.getWidth()) / 2, 40);
 }
 
 void GameManager::onCollision(GameObject* ball, GameObject* o) {
+
 }
 
 void GameManager::onBorderExit(GameObject* ball, BallObserver::EXIT_SIDE side) {
+	SDL_Color color = { 255, 255, 255, 255 };
+	if (side == BallObserver::LEFT)score2++;
+	else if (side == BallObserver::RIGHT)score1++;
+	puntuaciones.loadFromText(getGame()->getRenderer(),
+		std::to_string(score1) + " - " + std::to_string(score2), *font_, color);
 }
 
 void GameManager::registerGameStateObserver(GameStateObserver* o) {
+	observers.push_back(o);
 }

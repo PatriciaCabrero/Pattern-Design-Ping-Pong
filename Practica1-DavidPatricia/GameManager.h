@@ -28,6 +28,9 @@ public:
 private:
 	Font* font_;
 	Texture startMsgTexture_;
+	Texture puntuaciones;
+	int score1, score2;
+	std::vector<GameStateObserver*> observers;
 
 };
 

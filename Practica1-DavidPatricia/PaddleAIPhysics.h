@@ -5,7 +5,7 @@
 
 class PaddleAIPhysics : public PhysicsComponent {
 public:
-	PaddleAIPhysics();
+	PaddleAIPhysics() {};
 	PaddleAIPhysics(GameObject* ball);
 	virtual ~PaddleAIPhysics();
 

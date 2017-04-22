@@ -30,6 +30,12 @@ public:
 private:
 	GameComponent* actor_;
 	SDL_Keycode ctrlKey_;
+	std::vector<InputComponent*>inputComps;
+	int currentMode;
+	std::vector<RenderComponent*>renderActorComps;
+	std::vector<RenderComponent*>renderIconsComps;
+	std::vector<PhysicsComponent*>physicsComps;
+	RenderComponent* actualRender;
 
 };
 

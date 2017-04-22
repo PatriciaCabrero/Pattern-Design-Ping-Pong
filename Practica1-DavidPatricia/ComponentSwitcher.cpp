@@ -1,4 +1,5 @@
 ﻿#include "ComponentSwitcher.h"
+#include "ImageRendered.h"
 
 ComponentSwitcher::ComponentSwitcher(SDLGame* game, GameComponent* actor,
 		SDL_Keycode ctrlKey) :
@@ -12,20 +13,41 @@ void ComponentSwitcher::update() {
 }
 
 void ComponentSwitcher::handleInput(const SDL_Event& event) {
+	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == ctrlKey_) {
+		switchToNext();
+	}
 }
 
 void ComponentSwitcher::addMode(InputComponent* inputComp,
 		PhysicsComponent* physicsComp, RenderComponent* renderComp,
 		RenderComponent* modeRendered) {
+	inputComps.push_back(inputComp);
+	//Falta el resto de componentes
+	physicsComps.push_back(physicsComp);
+	renderActorComps.push_back(renderComp);
+	renderIconsComps.push_back(modeRendered);
 }
 
 void ComponentSwitcher::setMode(int mode) {
+	currentMode = mode;
+	actor_->setInputComponent(inputComps[currentMode]);
+	actor_->setPhysicsComponent(physicsComps[currentMode]);
+	actor_->setRenderComponent(renderActorComps[currentMode]);
+	renderIconsComps[currentMode]->init(this);
 }
 
 void ComponentSwitcher::switchToNext() {
+	currentMode = (currentMode + 1) % inputComps.size();
+	actor_->setInputComponent(inputComps[currentMode]);
+	actor_->setPhysicsComponent(physicsComps[currentMode]);
+	actor_->setRenderComponent(renderActorComps[currentMode]);
+	renderIconsComps[currentMode]->init(this);
 }
 
 void ComponentSwitcher::render() {
+	//renderIconsComps[currentMode].modeRendered->render(this);
+	//dynamic_cast<ImageRendered*>(renderIconsComps[currentMode])->render(this);
+	renderIconsComps[currentMode]->render(this);
 }
 /*
 Es un GameObject que permite cambiar el InputComponent​, PhysicsComponent y RenderComponent ​de un
@@ -45,4 +67,6 @@ Internamente ComponentSwitcher tiene que mantener una lista de modos (por ejempl
 La posición en la lista es el identificador del modo. El método addMode ​permite añadir un modo y el método setMode
 permite cambiar de modo (por ejemplo para fijar el modo inicial desde fuera). El método handleInput de
 ComponentSwitcher ​tiene que cambiar al modo siguiente si detecta un pulse sobre ctrlKey​. El siguiente del
-último modo es el primero.*/
+último modo es el primero.
+
+*/
