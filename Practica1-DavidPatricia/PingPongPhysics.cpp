@@ -15,6 +15,7 @@ void PingPongPhysics::init(GameObject* o) {
 }
 
 void PingPongPhysics::update(GameObject* o) {
+	ball = o;
 	Vector2D<int> nextPos = o->getPosition() + o->getDirection();
 	//Pelota colisiona con pala derecha
 	if (o->getDirection().getX() > 0
@@ -104,6 +105,8 @@ void PingPongPhysics::resgisterBallObserver(BallObserver* o) {
 
 
 void PingPongPhysics::onGameStart() {
+
+	onRoundStart();
 }
 
 void PingPongPhysics::onGameOver() {
@@ -120,6 +123,7 @@ void PingPongPhysics::onRoundStart() {
 }
 
 void PingPongPhysics::onRoundOver() {
+	ball->setPosition(0, 0);
 	//Direccion de la pelota a 0,0
 	//Posicion a centro pista
 }

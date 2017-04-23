@@ -21,9 +21,18 @@ void GameManager::update() {
 }
 
 void GameManager::handleInput(const SDL_Event& event) {
-	/*if (event.key.keysym.sym == SDLK_SPACE){
-		game_->start();
-	}*/
+	if (event.key.keysym.sym == SDLK_SPACE){
+		if (score1 == score2 == 0) {
+			for each(GameStateObserver* obs in observers) {
+				obs->onGameStart();
+			}
+		}
+		else {
+			for each(GameStateObserver* obs in observers) {
+				obs->onRoundStart();
+			}
+		}
+	}
 }
 
 void GameManager::render() {
@@ -43,6 +52,15 @@ void GameManager::onBorderExit(GameObject* ball, BallObserver::EXIT_SIDE side) {
 	else if (side == BallObserver::RIGHT)score1++;
 	puntuaciones.loadFromText(getGame()->getRenderer(),
 		std::to_string(score1) + " - " + std::to_string(score2), *font_, color);
+	if (score1 == 5) {
+		for each(GameStateObserver* obs in observers) {
+			obs->onRoundOver(ball);
+		}
+	}else if (score2 == 5) {
+		for each(GameStateObserver* obs in observers) {
+			obs->onRoundOver(ball);
+		}
+	}
 }
 
 void GameManager::registerGameStateObserver(GameStateObserver* o) {

@@ -42,7 +42,7 @@ void PingPong::initGame() {
 	ball_ = new GameComponent(this);
 	ball_->setWidth(10);
 	ball_->setHeight(10);
-	ball_->setDirection( (rand() % 5)+3, (rand()%5)+3); // change to  (0,0) at the end
+	ball_->setDirection(0,0); // change to  (0,0) at the end
 	ball_->setPosition(
 			ball_->getGame()->getWindowWidth() / 2 - ball_->getWidth() / 2,
 			ball_->getGame()->getWindowHeight() / 2 - ball_->getHeight() / 2);

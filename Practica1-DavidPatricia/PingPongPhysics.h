@@ -26,6 +26,8 @@ public:
 private:
 	GameObject* left_paddle_;
 	GameObject* right_paddle_;
+	GameObject* ball;
+
 	void actualizaDir(GameObject* ball, GameObject* paddle);
 
 	std::vector<BallObserver*>observers;
