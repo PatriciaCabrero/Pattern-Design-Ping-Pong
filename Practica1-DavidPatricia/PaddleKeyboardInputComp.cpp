@@ -27,14 +27,3 @@ void PaddleKeyboardInputComp::handleInput(SDL_Event event, GameObject* paddle) {
 PaddleKeyboardInputComp::~PaddleKeyboardInputComp() {
 
 }
-
-/*Es un InputComponent para controlar una raqueta por teclado. La constructora recibe los códigos de las teclas que
-hay que usar para mover y parar la raqueta, además recibe las unidades de velocidad que hay que añadir a la
-dirección vertical en cada movimiento.
-
-El método handleInput incrementa la velocidad vertical (de la raqueta correspondiente) en velocity unidades si
-el jugador pulsa up_key​, decrementa la velocidad vertical en velocity unidades si pulsa down_key y cambia la
-velocidad vertical 0 si pulsa stop_key​. El método init cambia la velocidad vertical a 0​. Recuerda que en esta
-clase sólo cambiamos la velocidad vertical, no se toca la posición, el PhysicsComponent ​correspondiente se
-encarga de cambiar la posición de la raqueta en función de la nueva velocidad.
-*/

@@ -13,6 +13,7 @@
 #include "RenderComponent.h"
 #include "GameManager.h"
 #include "ComponentSwitcher.h"
+#include "PingPongPhysics.h"
 
 class PingPong: public SDLGame {
 
@@ -42,15 +43,17 @@ private:
 	GameManager* gameManager_;
 
 	PhysicsComponent* bounceOnBorderPhysics_;
-	PhysicsComponent* pingPongPhysics_;
+	PingPongPhysics* pingPongPhysics_;
 	PhysicsComponent* stopOnBorderPhysics_;
 	PhysicsComponent* aiPaddlePhysics_;
 	RenderComponent* rectangleRenderer_;
 	RenderComponent* imageRenderer_;
+
 	//Renders del Switcher
 	RenderComponent* brainRend_;
 	RenderComponent* mouseRend_;
 	RenderComponent* keyboardRend_;
+
 	InputComponent* leftInputKeyboard_;
 	InputComponent* rightInputKeyboard_;
 	InputComponent* InputMouse_;

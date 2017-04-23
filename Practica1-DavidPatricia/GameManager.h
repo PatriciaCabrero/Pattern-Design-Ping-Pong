@@ -29,6 +29,13 @@ private:
 	Font* font_;
 	Texture startMsgTexture_;
 	Texture puntuaciones;
+	Texture winner;
+	SoundEffect* wallHit;
+	SoundEffect* paddleHit;
+	Music* boo;
+	Music* cheers;
+	Music* beat;
+	bool pausa;
 	int score1, score2;
 	std::vector<GameStateObserver*> observers;
 

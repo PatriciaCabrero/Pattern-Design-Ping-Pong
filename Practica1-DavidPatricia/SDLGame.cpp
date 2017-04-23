@@ -2,21 +2,21 @@
 #include <time.h>
 
 
-std::vector<std::string> SDLGame::imageFiles_ { "images/blank.png",
-"images/tennis_ball.png", "images/keyboard.png", "images/mouse.png",
-"images/ai.png" };
+std::vector<std::string> SDLGame::imageFiles_ { "./images/blank.png",
+"./images/tennis_ball.png", "./images/keyboard.png", "./images/mouse.png",
+"./images/ai.png" };
 
 
 std::vector<std::pair<std::string, int>> SDLGame::fontFiles_ { {
-		"fonts/ARIAL.ttf", 16 }, { "fonts/ARIAL.ttf", 24 }, {
-			"fonts/NES-Chimera.ttf", 16 }, { "fonts/NES-Chimera.ttf", 24 }, {
-				"fonts/Capture_it.ttf", 16 }, { "fonts/Capture_it.ttf", 24 } };
+		"./fonts/ARIAL.ttf", 16 }, { "./fonts/ARIAL.ttf", 24 }, {
+			"./fonts/NES-Chimera.ttf", 16 }, { "./fonts/NES-Chimera.ttf", 24 }, {
+				"./fonts/Capture_it.ttf", 16 }, { "./fonts/Capture_it.ttf", 24 } };
 
-std::vector<std::string> SDLGame::musicFiles_ { "sound/beat.wav",
-"sound/cheer.wav", "sound/boooo.wav" };
+std::vector<std::string> SDLGame::musicFiles_ { "./sounds/beat.wav",
+"./sounds/cheer.wav", "./sounds/boooo.wav" };
 
-std::vector<std::string> SDLGame::soundEffectFiles_ { "sound/wall_hit.wav",
-"sound/paddle_hit.wav" };
+std::vector<std::string> SDLGame::soundEffectFiles_ { "./sounds/wall_hit.wav",
+"./sounds/paddle_hit.wav" };
 
 SDLGame::SDLGame(std::string windowTitle, int width, int height) :
 		windowTitle_(windowTitle), width_(width), height_(height) {

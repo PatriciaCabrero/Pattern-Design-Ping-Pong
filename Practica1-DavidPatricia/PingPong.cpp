@@ -6,7 +6,6 @@
 #include "PaddleKeyboardInputComp.h"
 #include "PaddleMouseInputComp.h"
 #include "PaddleAIPhysics.h"
-#include "PingPongPhysics.h"
 
 
 PingPong::PingPong() :
@@ -27,7 +26,7 @@ void PingPong::initGame() {
 	SDL_Color color = { 255, 255, 255, 255 };
 
 	rectangleRenderer_ = new RectRender(color);
-	imageRenderer_ = new ImageRendered( getResources()->getTexture(SDLGame::TennisBall) );
+	imageRenderer_ = new ImageRendered( getResources()->getTexture(SDLGame::TennisBall));
 	mouseRend_ = new ImageRendered(getResources()->getTexture(SDLGame::MouseIcon));
 	keyboardRend_ = new ImageRendered(getResources()->getTexture(SDLGame::KeyBoardIcon));
 	brainRend_ = new ImageRendered(getResources()->getTexture(SDLGame::AIIcon));
@@ -72,14 +71,15 @@ void PingPong::initGame() {
 
 	//Ball physic component
 	pingPongPhysics_ = new PingPongPhysics(left_paddle_, right_paddle_);
+	pingPongPhysics_->init(ball_);
 	ball_->setPhysicsComponent(pingPongPhysics_);
 
 	//Switcher right
 	rightPcompSw_ = new ComponentSwitcher(this,right_paddle_,SDLK_2);
-	rightPcompSw_->setPosition(getWindowWidth() -90, 30);
+	rightPcompSw_->setPosition(getWindowWidth() - 70, 20);
 	rightPcompSw_->setDirection(0, 0);
 	rightPcompSw_->setWidth(50);
-	rightPcompSw_->setWidth(50);
+	rightPcompSw_->setHeight(50);
 	rightPcompSw_->addMode(rightInputKeyboard_,stopOnBorderPhysics_, rectangleRenderer_, keyboardRend_);
 	rightPcompSw_->addMode(InputMouse_, stopOnBorderPhysics_, rectangleRenderer_, mouseRend_);
 	rightPcompSw_->addMode(nullptr, aiPaddlePhysics_, rectangleRenderer_, brainRend_);
@@ -87,10 +87,10 @@ void PingPong::initGame() {
 
 	//Switcher left
 	leftPcompSw_ = new ComponentSwitcher(this, left_paddle_, SDLK_1);
-	leftPcompSw_->setPosition(30, 30);
+	leftPcompSw_->setPosition(20, 20);
 	leftPcompSw_->setDirection(0, 0);
 	leftPcompSw_->setWidth(50);
-	leftPcompSw_->setWidth(50);
+	leftPcompSw_->setHeight(50);
 	leftPcompSw_->addMode(leftInputKeyboard_, stopOnBorderPhysics_, rectangleRenderer_, keyboardRend_);
 	leftPcompSw_->addMode(InputMouse_, stopOnBorderPhysics_, rectangleRenderer_, mouseRend_);
 	leftPcompSw_->addMode(nullptr, aiPaddlePhysics_, rectangleRenderer_, brainRend_);
@@ -98,8 +98,8 @@ void PingPong::initGame() {
 
 	// game manager
 	gameManager_ = new GameManager(this);
-	dynamic_cast<PingPongPhysics*>(pingPongPhysics_)->resgisterBallObserver(gameManager_);
-	gameManager_->registerGameStateObserver(dynamic_cast<PingPongPhysics*>(pingPongPhysics_));
+	pingPongPhysics_->resgisterBallObserver(gameManager_);
+	gameManager_->registerGameStateObserver(pingPongPhysics_);
 	actors_.push_back(left_paddle_);
 	actors_.push_back(right_paddle_);
 	actors_.push_back(ball_);
@@ -175,7 +175,6 @@ void PingPong::render() {
 	for (unsigned int i = 0; i < actors_.size(); i++) {
 		actors_[i]->render();
 	}
-	//rightPcompSw_->render();
 	SDL_RenderPresent(getRenderer());
 }
 

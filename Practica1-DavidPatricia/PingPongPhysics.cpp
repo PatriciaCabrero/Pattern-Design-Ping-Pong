@@ -6,16 +6,18 @@ PingPongPhysics::PingPongPhysics(GameObject* left_paddle,
 		GameObject* right_paddle) :
 		left_paddle_(left_paddle), right_paddle_(right_paddle), hits_(
 				0), speed_(8) {
+	ball_ = nullptr;
 }
 
 PingPongPhysics::~PingPongPhysics() {
 }
 
 void PingPongPhysics::init(GameObject* o) {
+	ball_ = o;
 }
 
 void PingPongPhysics::update(GameObject* o) {
-	ball = o;
+	bool pared = false;
 	Vector2D<int> nextPos = o->getPosition() + o->getDirection();
 	//Pelota colisiona con pala derecha
 	if (o->getDirection().getX() > 0
@@ -23,7 +25,6 @@ void PingPongPhysics::update(GameObject* o) {
 		&& nextPos.getY() > right_paddle_->getPosition().getY() - o->getHeight() 
 		&& nextPos.getY() < right_paddle_->getPosition().getY() + right_paddle_->getHeight()) {
 		hits_++;
-		/*o->setDirectionX(-o->getDirection().getX());*/
 		actualizaDir(o, right_paddle_);
 		nextPos = o->getPosition() + o->getDirection();
 		for each (BallObserver* obs in observers)
@@ -37,7 +38,6 @@ void PingPongPhysics::update(GameObject* o) {
 		&& nextPos.getY() > left_paddle_->getPosition().getY() - o->getHeight()
 		&& nextPos.getY() < left_paddle_->getPosition().getY() + left_paddle_->getHeight()) {
 		hits_++;
-		//o->setDirectionX(-o->getDirection().getX());
 		actualizaDir(o, left_paddle_);
 		nextPos = o->getPosition() + o->getDirection();
 		for each (BallObserver* obs in observers)
@@ -50,17 +50,23 @@ void PingPongPhysics::update(GameObject* o) {
 		nextPos.setY(0);
 		o->setPosition(nextPos);
 		o->setDirectionY(-1 * o->getDirection().getY());
-		//wallHitSound_->play();
+		for each (BallObserver* obs in observers)
+		{
+			obs->onBorderExit(o, BallObserver::TOP);
+		}
 	}
 	//Borde inferior
 	if (nextPos.getY() >= o->getGame()->getWindowHeight() - o->getHeight()) {
 		nextPos.setY(o->getGame()->getWindowHeight() - o->getHeight());
 		o->setDirectionY(-1 * o->getDirection().getY());
-		//wallHitSound_->play();
+		for each (BallObserver* obs in observers)
+		{
+			obs->onBorderExit(o, BallObserver::BOT);
+		}
 	}
 
 	//Borde izquierdo
-	if (nextPos.getX() <= 0) {//KEPPPASAAkI
+	if (nextPos.getX() <= 0) {
 		nextPos.setX(0);
 		o->setPosition(nextPos);
 		o->setDirectionX(-1 * o->getDirection().getX());
@@ -68,24 +74,25 @@ void PingPongPhysics::update(GameObject* o) {
 		{
 			obs->onBorderExit(o,BallObserver::LEFT);
 		}
-		//wallHitSound_->play();
+		pared = true;
 	}
 	//Borde derecho
-	if (nextPos.getX() >= o->getGame()->getWindowWidth() - o->getWidth()) {//KEPPPASAAkI
+	if (nextPos.getX() >= o->getGame()->getWindowWidth() - o->getWidth()) {
 		nextPos.setX(o->getGame()->getWindowWidth() - o->getWidth());
 		o->setDirectionX(-1 * o->getDirection().getX());
 		for each (BallObserver* obs in observers)
 		{
 			obs->onBorderExit(o, BallObserver::RIGHT);
 		}
-		//wallHitSound_->play();
+		pared = true;
 	}
 
 	if (hits_ == 5) {
 		hits_ = 0;
 		speed_++;
 	}
-	o->setPosition(nextPos);
+	if (!pared)
+		o->setPosition(nextPos);
 }
 
 void PingPongPhysics::actualizaDir(GameObject* ball, GameObject* paddle)
@@ -105,11 +112,11 @@ void PingPongPhysics::resgisterBallObserver(BallObserver* o) {
 
 
 void PingPongPhysics::onGameStart() {
-
 	onRoundStart();
 }
 
 void PingPongPhysics::onGameOver() {
+	onRoundOver();
 }
 
 void PingPongPhysics::onRoundStart() {
@@ -119,12 +126,12 @@ void PingPongPhysics::onRoundStart() {
 	int angle = 60 - (rand() % 121);
 	int dx = direction * speed_ * std::cos(angle * M_PI / 180.0f);
 	int dy = speed_ * std::sin(angle * M_PI / 180.0f);
-	//Le pongo la direccion a la pelota
+	ball_->setDirection(dx, dy);
 }
 
 void PingPongPhysics::onRoundOver() {
-	ball->setPosition(0, 0);
-	//Direccion de la pelota a 0,0
-	//Posicion a centro pista
+	ball_->setPosition(ball_->getGame()->getWindowWidth()/2 - ball_->getWidth() / 2,
+		ball_->getGame()->getWindowHeight() / 2 + ball_->getHeight() / 2);
+	ball_->setDirection(0, 0);
 }
 

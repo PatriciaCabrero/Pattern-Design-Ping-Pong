@@ -35,7 +35,6 @@ private:
 	std::vector<RenderComponent*>renderActorComps;
 	std::vector<RenderComponent*>renderIconsComps;
 	std::vector<PhysicsComponent*>physicsComps;
-	RenderComponent* actualRender;
 
 };
 

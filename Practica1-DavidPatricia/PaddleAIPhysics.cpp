@@ -3,6 +3,7 @@
 
 PaddleAIPhysics::PaddleAIPhysics(GameObject* ball) :
 		ball_(ball) {
+	speedY = 5;
 }
 
 PaddleAIPhysics::~PaddleAIPhysics() {
@@ -12,30 +13,30 @@ void PaddleAIPhysics::init(GameObject* paddle) {
 }
 
 void PaddleAIPhysics::update(GameObject* paddle) {
+	int medioCentroOfensivo = paddle->getGame()->getWindowHeight() / 2;
 	if (ball_->getPosition().getX() <= paddle->getPosition().getX()){//PALA DERECHA
 		if (ball_->getDirection().getX() > 0)//Me estoy acercando
 		{
-			paddle->setPositionY(ball_->getPosition().getY());
-			/*int  y_pred​;
-			int dist = paddle->getPosition().getX()- ball_->getPosition().getX();
+			int  y_pred​;
+			int dist = abs(paddle->getPosition().getX()- ball_->getPosition().getX());
 			if (dist != 0) {
 				int tiempo = ball_->getDirection().getX() / dist;
-				y_pred​ = tiempo* paddle->getDirection().getY();
-				if ((y_pred​ < paddle->getPosition().getY() && paddle->getDirection().getY() > 0) ||
-					(y_pred​ > paddle->getPosition().getY() && paddle->getDirection().getY() < 0)) {
-					paddle->setDirectionY(-paddle->getDirection().getY());
-					std::cout << paddle->getDirection().getY() << "\n";
+				y_pred​ = ball_->getPosition().getY() + tiempo* paddle->getDirection().getY();
+				while (y_pred​ < 0 || y_pred​ > paddle->getGame()->getWindowHeight()) {
+					if (y_pred​ < 0) y_pred​ = abs(y_pred​);
+					else if (y_pred​ > paddle->getGame()->getWindowHeight()) y_pred​ -= 2 * (y_pred​ - paddle->getGame()->getWindowHeight());
 				}
-			}*/
+				if (y_pred​ == paddle->getPosition().getY() + paddle->getHeight() / 2) paddle->setDirectionY(0);
+				else if (y_pred​ > paddle->getPosition().getY() + paddle->getHeight() / 2)paddle->setDirectionY(speedY);
+				else paddle->setDirectionY(-speedY);
+			}
 
 		}
 		else//Me alejo
 		{
-			if ((paddle->getPosition().getY() < paddle->getGame()->getWindowHeight() / 2 && paddle->getDirection().getY() < 0) ||
-				(paddle->getPosition().getY() > paddle->getGame()->getWindowHeight() / 2 && paddle->getDirection().getY() > 0)){
-				paddle->setDirectionY(-paddle->getDirection().getY());
-			}
-			paddle->setPosition(paddle->getPosition() + paddle->getDirection());
+			if (paddle->getPosition().getY() + paddle->getHeight() / 2 == medioCentroOfensivo)paddle->setDirection(0, 0);
+			else if (paddle->getPosition().getY() + paddle->getHeight() / 2 > medioCentroOfensivo)paddle->setDirection(0, -speedY);
+			else paddle->setDirectionY(speedY);
 		}
 	
 	}
@@ -43,37 +44,27 @@ void PaddleAIPhysics::update(GameObject* paddle) {
 	{
 		if (ball_->getDirection().getX() < 0)//Me estoy acercando
 		{
-			paddle->setPositionY(ball_->getPosition().getY());
-			/*
 			int  y_pred​;
-			int dist = paddle->getPosition().getX() - ball_->getPosition().getX();
+			int dist = abs(paddle->getPosition().getX() - ball_->getPosition().getX());
 			if (dist != 0) {
 				int tiempo = ball_->getDirection().getX() / dist;
-				y_pred​ = tiempo* paddle->getDirection().getY();
-				if ((y_pred​ < paddle->getPosition().getY() && paddle->getDirection().getY() > 0) ||
-					(y_pred​ > paddle->getPosition().getY() && paddle->getDirection().getY() < 0)) {
-					paddle->setDirectionY(-paddle->getDirection().getY());
-					
+				y_pred​ = ball_->getPosition().getY() + tiempo* paddle->getDirection().getY();
+				while (y_pred​ < 0 || y_pred​ > paddle->getGame()->getWindowHeight()) {
+					if (y_pred​ < 0) y_pred​ = abs(y_pred​);
+					else if (y_pred​ > paddle->getGame()->getWindowHeight()) y_pred​ -= 2 * (y_pred​ - paddle->getGame()->getWindowHeight());
 				}
-			}*/
+				if (y_pred​ == paddle->getPosition().getY() + paddle->getHeight() / 2) paddle->setDirectionY(0);
+				else if (y_pred​ > paddle->getPosition().getY() + paddle->getHeight() / 2)paddle->setDirectionY(speedY);
+				else paddle->setDirectionY(-speedY);
+			}
 		}
 		else //Me alejo
 		{
-			if ((paddle->getPosition().getY() < paddle->getGame()->getWindowHeight() / 2 && paddle->getDirection().getY() < 0) ||
-				(paddle->getPosition().getY() > paddle->getGame()->getWindowHeight() / 2 && paddle->getDirection().getY() > 0)){
-				paddle->setDirectionY(- paddle->getDirection().getY());
-			}
-			paddle->setPosition(paddle->getPosition() + paddle->getDirection());
+			if (paddle->getPosition().getY() + paddle->getHeight() / 2 == medioCentroOfensivo)paddle->setDirection(0, 0);
+			else if (paddle->getPosition().getY() + paddle->getHeight() / 2 > medioCentroOfensivo)paddle->setDirection(0, -speedY);
+			else paddle->setDirectionY(speedY);
 		}
 	}
+	if(paddle->getPosition().getY() + paddle->getDirection().getY() > 0 && paddle->getPosition().getY() + paddle->getDirection().getY() + paddle->getHeight() < medioCentroOfensivo*2)
+		paddle->setPosition(paddle->getPosition() + paddle->getDirection());
 }
-
-/*Es un PhysicsComponent para controlar una raqueta automáticamente usando un algoritmo sencillo. La
-constructora recibe un GameObject ​que representa la bola para poder consultar su posición y dirección actual en el
-algoritmo.
-El método update​ calcula la siguiente posición de la raqueta usando los siguientes pasos:
-1. Si la bola no avanza hacia el lado de la raqueta avanzamos la raqueta hacia el centro vertical;
-2. Si la bola avanza hacia el lado de la raqueta, calculamos una predicción y_pred de la posición vertical de la
-bola cuando llegue al lado de la raqueta y avanzamos la raqueta hacia la posición y_pred​.
-Para la predicción de la posición vertical de la bola se puede usar simplemente la posición vertical actual de la bola o
-implementar algo más inteligente. Recuerda que la posición horizontal de las raquetas nunca cambia.*/

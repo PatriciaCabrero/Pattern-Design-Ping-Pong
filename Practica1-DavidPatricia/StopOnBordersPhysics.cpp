@@ -21,7 +21,6 @@ void StopOnBordersPhysics::update(GameObject* o) {
 		nextPos.setY(0);
 		o->setPosition(nextPos);
 		o->setDirectionY(0);
-		//wallHitSound_->play();
 	}
 
 	if (bottom_
@@ -29,7 +28,6 @@ void StopOnBordersPhysics::update(GameObject* o) {
 		>= o->getGame()->getWindowHeight() - o->getHeight()) {
 		nextPos.setY(o->getGame()->getWindowHeight() - o->getHeight());
 		o->setDirectionY(0);
-		//wallHitSound_->play();
 	}
 
 	// check if we exit from left/right
@@ -37,7 +35,6 @@ void StopOnBordersPhysics::update(GameObject* o) {
 		nextPos.setX(0);
 		o->setPosition(nextPos);
 		o->setDirectionX(0);
-		//wallHitSound_->play();
 	}
 
 	if (right_
@@ -45,13 +42,7 @@ void StopOnBordersPhysics::update(GameObject* o) {
 		>= o->getGame()->getWindowWidth() - o->getWidth()) {
 		nextPos.setX(o->getGame()->getWindowWidth() - o->getWidth());
 		o->setDirectionX(0);
-		//wallHitSound_->play();
 	}
 
 	o->setPosition(nextPos);
 }
-/*Es un PhysicsComponent que no deja al GameObject correspondiente salir de los bordes de la pista: si la posición
-nueva o->getPostion()+o->getDirection() deja a alguna parte del GameObject ​fuera de la pista lo
-volvemos a colocar justo al borde correspondiente y cambiamos su dirección correspondiente a 0​. La constructora
-recibe cuatro parámetros de tipo boolean​ para indicar de qué bordes no se permite salir, etc.
-Vamos a usar este PhysicsComponent​ para que las raquetas no salgan del borde superior e inferior*/

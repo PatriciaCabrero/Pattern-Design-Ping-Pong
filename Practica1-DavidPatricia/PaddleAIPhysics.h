@@ -15,6 +15,7 @@ public:
 
 private:
 	GameObject* ball_;
+	int speedY;
 };
 
 #endif /* PADDLEAIPHYSICS_H_ */
