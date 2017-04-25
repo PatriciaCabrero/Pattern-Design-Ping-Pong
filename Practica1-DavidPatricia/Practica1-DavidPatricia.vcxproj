@@ -40,6 +40,7 @@
     <ClCompile Include="SoundEffect.cpp" />
     <ClCompile Include="StopOnBordersPhysics.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TimedObstacle.cpp" />
     <ClCompile Include="Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +69,8 @@
     <ClInclude Include="SoundEffect.h" />
     <ClInclude Include="StopOnBordersPhysics.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TimedObstacle.h" />
+    <ClInclude Include="TimedObstacleObserver.h" />
     <ClInclude Include="Vector2D.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -79,7 +82,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">

@@ -1,4 +1,4 @@
-#include <cmath>
+﻿#include <cmath>
 #include <random>
 #include "PingPongPhysics.h"
 
@@ -134,4 +134,3 @@ void PingPongPhysics::onRoundOver() {
 		ball_->getGame()->getWindowHeight() / 2 + ball_->getHeight() / 2);
 	ball_->setDirection(0, 0);
 }
-

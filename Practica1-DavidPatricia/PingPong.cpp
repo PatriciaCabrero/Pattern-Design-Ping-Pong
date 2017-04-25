@@ -97,7 +97,7 @@ void PingPong::initGame() {
 	leftPcompSw_->setMode(0);
 
 	// game manager
-	gameManager_ = new GameManager(this);
+	gameManager_ = new GameManager(this, left_paddle_, right_paddle_);
 	pingPongPhysics_->resgisterBallObserver(gameManager_);
 	gameManager_->registerGameStateObserver(pingPongPhysics_);
 	actors_.push_back(left_paddle_);

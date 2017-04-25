@@ -11,7 +11,7 @@
 class GameManager: public GameObject, public BallObserver {
 
 public:
-	GameManager(SDLGame* game);
+	GameManager(SDLGame* game, GameObject* lPaddle, GameObject* rPaddle);
 	virtual ~GameManager();
 
 	virtual void registerGameStateObserver(GameStateObserver* o);
@@ -38,6 +38,9 @@ private:
 	bool pausa;
 	int score1, score2;
 	std::vector<GameStateObserver*> observers;
+	GameObject* lPaddle;
+	GameObject* rPaddle;
+	GameObject* last_paddle_hit_;
 
 };
 

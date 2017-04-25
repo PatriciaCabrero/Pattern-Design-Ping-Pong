@@ -1,12 +1,12 @@
-#include <string>
+﻿#include <string>
 #include <cmath>
 #include <random>
 
 #include "GameManager.h"
 
 
-GameManager::GameManager(SDLGame* game) :
-		GameObject(game) {
+GameManager::GameManager(SDLGame* game,GameObject* lPaddle, GameObject* rPaddle) :
+		GameObject(game),rPaddle(rPaddle), lPaddle(lPaddle) {
 	font_ = game_->getResources()->getFont(SDLGame::NESChimera16);
 	SDL_Color color = { 255, 255, 255, 255 };
 	startMsgTexture_.loadFromText(getGame()->getRenderer(),
@@ -37,11 +37,13 @@ void GameManager::handleInput(const SDL_Event& event) {
 			SDL_Color color = { 255, 255, 255, 255 };
 			puntuaciones.loadFromText(getGame()->getRenderer(),
 				std::to_string(score1) + " - " + std::to_string(score2), *font_, color);
+			last_paddle_hit_ = nullptr;
 			for each(GameStateObserver* obs in observers) {
 				obs->onGameStart();
 			}
 		}
 		else {
+			last_paddle_hit_ = nullptr;
 			for each(GameStateObserver* obs in observers) {
 				obs->onRoundStart();
 			}
@@ -58,6 +60,7 @@ void GameManager::render() {
 }
 
 void GameManager::onCollision(GameObject* ball, GameObject* o) {
+	last_paddle_hit_ = o;
 	paddleHit->play();
 }
 
