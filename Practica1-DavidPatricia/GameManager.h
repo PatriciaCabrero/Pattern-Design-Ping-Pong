@@ -7,8 +7,9 @@
 #include "GameStateObserver.h"
 #include "Font.h"
 #include "Texture.h"
+#include "TimedObstacleObserver.h"
 
-class GameManager: public GameObject, public BallObserver {
+class GameManager : public GameObject, public BallObserver, public TimedObstacleObserver {
 
 public:
 	GameManager(SDLGame* game, GameObject* lPaddle, GameObject* rPaddle);
@@ -24,6 +25,11 @@ public:
 	// from BallObserver
 	virtual void onCollision(GameObject* ball, GameObject* o);
 	virtual void onBorderExit(GameObject* ball, BallObserver::EXIT_SIDE side);
+
+	//from TimedObstacleObserver
+	virtual void onObstacleCollision(GameObject* obs, GameObject* o);
+	virtual void onObstacleStateChange(GameObject* obs, GameObject* o);
+
 
 private:
 	Font* font_;
@@ -41,6 +47,7 @@ private:
 	GameObject* lPaddle;
 	GameObject* rPaddle;
 	GameObject* last_paddle_hit_;
+	bool paredrch, paredizq;
 
 };
 

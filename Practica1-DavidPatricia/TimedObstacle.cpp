@@ -1,14 +1,18 @@
 ﻿#include "TimedObstacle.h"
+#include "RectRender.h"
 
 
 TimedObstacle::TimedObstacle(SDLGame* game, int pTime, int dTime, GameObject* ball) : 
 GameObject(game), pTime(pTime), dTime(dTime), ball(ball), juegoactivo(false)
 {
+	SDL_Color color = { 255, 255, 255, 255 };
+	renderComp_ = new RectRender(color);
 }
 
 
 TimedObstacle::~TimedObstacle()
 {
+	delete renderComp_;
 }
 
 void TimedObstacle::update(){
@@ -16,10 +20,33 @@ void TimedObstacle::update(){
 		if (!active_ && last_time_on_ + pTime < SDL_GetTicks()){
 			if (rand() % 2){
 				active_ = true;
+				visible = true;
 				last_time_on_ = SDL_GetTicks();
+				for each (TimedObstacleObserver* var in timedObservers)
+				{
+					var->onObstacleStateChange(this, true);
+				}
+				//Pos aleatoria
+				pos_.set(posAleatoria());
 			}
 		}
 		else if (active_ && last_time_on_ + dTime < SDL_GetTicks()){
+			active_ = false;
+			visible = false;
+
+			for each (TimedObstacleObserver* var in timedObservers)
+			{
+				var->onObstacleStateChange(this, false);
+			}
+		}
+		else if (active_&&visible){
+			if (compCollision()){
+				visible = false;
+				for each (TimedObstacleObserver* var in timedObservers)
+				{
+					var->onObstacleCollision(this, ball);
+				}
+			}
 
 		}
 	}
@@ -35,6 +62,8 @@ void TimedObstacle::onGameStart(){
 void TimedObstacle::onGameOver(){
 	juegoactivo = false;
 	active_ = false;
+	visible = false;
+
 };
 
 void TimedObstacle::onRoundStart(){
@@ -44,8 +73,44 @@ void TimedObstacle::onRoundStart(){
 void TimedObstacle::onRoundOver(){
 	juegoactivo = false;
 	active_ = false;
+	visible = false;
+
+};
+void TimedObstacle::render(){
+	if (visible && renderComp_)
+		renderComp_->render(this);
 };
 
+
+Vector2D<int> TimedObstacle::posAleatoria(){
+	Vector2D<int> aux;
+	aux.setX(ball->getGame()->getWindowHeight()* ((float)(rand() % 100) / 100));
+	aux.setY(ball->getGame()->getWindowWidth()* ((float)(rand() % 100) / 100));
+
+	while (aux.getX() > ball->getGame()->getWindowHeight() - 20 || aux.getX()< 20){
+		aux.setX(ball->getGame()->getWindowHeight()* ((float)(rand() % 100) / 100));
+	}
+	return aux;
+}
+bool TimedObstacle::compCollision(){
+	//esquina superior izquierda 
+	if (ball->getPosition().getX() > pos_.getX() && ball->getPosition().getX() < pos_.getX() + width_
+		&& ball->getPosition().getY() > pos_.getY() && ball->getPosition().getY() < pos_.getY() + height_)
+		return true;
+	//esquina superior derecha
+	else if (ball->getPosition().getX() + ball->getWidth() > pos_.getX() && ball->getPosition().getX() + ball->getWidth() < pos_.getX() + width_
+		&& ball->getPosition().getY() > pos_.getY() && ball->getPosition().getY() < pos_.getY() + height_)
+		return true;
+	//esquina inferior izquierda 
+	else if(ball->getPosition().getX() > pos_.getX() && ball->getPosition().getX() < pos_.getX() + width_
+		&& ball->getPosition().getY() + ball->getHeight() > pos_.getY() && ball->getPosition().getY() + ball->getHeight() < pos_.getY() + height_)
+		return true;
+	//esquina inferior derecha
+	else if (ball->getPosition().getX() + ball->getWidth() > pos_.getX() && ball->getPosition().getX() + ball->getWidth() < pos_.getX() + width_
+		&& ball->getPosition().getY() + ball->getHeight()> pos_.getY() && ball->getPosition().getY() + ball->getHeight() < pos_.getY() + height_)
+		return true;
+	else return false;
+}
 
 /*1. Si el juego está en marcha, cada pTime milisegundos si el valor de rand()%2 es cero se activa el
 obstáculo para un periodo de dTime milisegundos. Cuando el juego está parado el obstáculo tiene
