@@ -5,8 +5,11 @@
 TimedObstacle::TimedObstacle(SDLGame* game, int pTime, int dTime, GameObject* ball) : 
 GameObject(game), pTime(pTime), dTime(dTime), ball(ball), juegoactivo(false)
 {
-	SDL_Color color = { 255, 255, 255, 255 };
+	SDL_Color color = { 0, 255, 255, 255 };
 	renderComp_ = new RectRender(color);
+	visible = false;
+	juegoactivo = false;
+	active_ = false;
 }
 
 
@@ -18,7 +21,7 @@ TimedObstacle::~TimedObstacle()
 void TimedObstacle::update(){
 	if (juegoactivo){
 		if (!active_ && last_time_on_ + pTime < SDL_GetTicks()){
-			if (rand() % 2){
+			if (rand() % 2 == 0){
 				active_ = true;
 				visible = true;
 				last_time_on_ = SDL_GetTicks();
@@ -51,23 +54,25 @@ void TimedObstacle::update(){
 		}
 	}
 }
+
 void TimedObstacle::addObserver(TimedObstacleObserver* o){
 	timedObservers.push_back(o);	
 }
+
 void TimedObstacle::onGameStart(){
 	juegoactivo = true;
-
+	active_ = false;
 };
 
 void TimedObstacle::onGameOver(){
 	juegoactivo = false;
 	active_ = false;
 	visible = false;
-
 };
 
 void TimedObstacle::onRoundStart(){
 	juegoactivo = true;
+	active_ = false;
 };
 
 void TimedObstacle::onRoundOver(){
@@ -92,6 +97,7 @@ Vector2D<int> TimedObstacle::posAleatoria(){
 	}
 	return aux;
 }
+
 bool TimedObstacle::compCollision(){
 	//esquina superior izquierda 
 	if (ball->getPosition().getX() > pos_.getX() && ball->getPosition().getX() < pos_.getX() + width_
@@ -128,4 +134,5 @@ obstáculo y avisar a los observadores con un mensaje adecuado.
 4. Si la bola choca con el obstáculo mientras esté activo y visible se tiene que ocultar el obstáculo y
 avisar a los observadores con un mensaje adecuado. Observe que aunque se oculta, el obstáculo
 sigue activo para lo que queda de dTime​. No es obligatorio cambiar la dirección de la bola al chocar
-con el obstáculo, puedes hacerlo si quieres.*/
+con el obstáculo, puedes hacerlo si quieres.
+*/

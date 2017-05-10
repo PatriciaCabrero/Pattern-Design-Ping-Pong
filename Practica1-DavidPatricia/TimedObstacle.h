@@ -18,6 +18,7 @@ public:
 	virtual void render();
 
 	virtual void update();
+	virtual void handleInput(const SDL_Event& event) {};
 
 private:
 	RenderComponent* renderComp_;

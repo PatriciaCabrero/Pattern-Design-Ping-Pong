@@ -119,11 +119,14 @@ void GameManager::registerGameStateObserver(GameStateObserver* o) {
 }
 
 void GameManager::onObstacleCollision(GameObject* obs, GameObject* o){
-	
-}
+	if (last_paddle_hit_ == lPaddle) paredizq = true;
+	else if (last_paddle_hit_ == rPaddle) paredrch = true;
+}//Falta cambiarlo a FALSE
 
-void GameManager::onObstacleStateChange(GameObject* obs, GameObject* o){
-
+void GameManager::onObstacleStateChange(GameObject* obs, bool state){
+	if (!obs->isActive()) {
+		paredizq = paredrch = false;
+	}
 }
 /*Cambia la clase GameManager ​para que sea un TimedObstacleObserver. ​Cada vez que reciba un
 aviso que la bola ha chocado con el obstáculo, se tiene que “poner una pared” en el borde donde está el
@@ -133,4 +136,5 @@ una pared simplemente se indica con una variable boolean en el GameManager y se 
 juego en ese caso, no hay que crear un nuevo objeto de juego que representa la pared, etc.
 Para indicar la existencia de una pared visualmente se puede dibujar una línea en el borde correspondiente
 o simplement mostrar un mensaje adecuado a lado del marcador, etc. Hay también que reproducir alguna
-música durante el tiempo en el que existe la pared.*/
+música durante el tiempo en el que existe la pared.
+*/

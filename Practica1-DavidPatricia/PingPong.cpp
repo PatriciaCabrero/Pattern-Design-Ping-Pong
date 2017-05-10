@@ -106,6 +106,15 @@ void PingPong::initGame() {
 	actors_.push_back(gameManager_);
 	actors_.push_back(rightPcompSw_);
 	actors_.push_back(leftPcompSw_);
+
+	//obstacle
+	obstacle = new TimedObstacle(this,5000,10000,ball_);
+	obstacle->setWidth(50);
+	obstacle->setHeight(50);
+	obstacle->addObserver(gameManager_);
+	actors_.push_back(obstacle);
+
+	gameManager_->registerGameStateObserver(obstacle);
 }
 
 void PingPong::closeGame() {

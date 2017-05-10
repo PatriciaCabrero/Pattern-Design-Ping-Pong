@@ -14,6 +14,7 @@
 #include "GameManager.h"
 #include "ComponentSwitcher.h"
 #include "PingPongPhysics.h"
+#include "TimedObstacle.h"
 
 class PingPong: public SDLGame {
 
@@ -57,6 +58,8 @@ private:
 	InputComponent* leftInputKeyboard_;
 	InputComponent* rightInputKeyboard_;
 	InputComponent* InputMouse_;
+
+	TimedObstacle* obstacle;
 	
 
 	std::vector<GameObject*> actors_;

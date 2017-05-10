@@ -28,7 +28,7 @@ public:
 
 	//from TimedObstacleObserver
 	virtual void onObstacleCollision(GameObject* obs, GameObject* o);
-	virtual void onObstacleStateChange(GameObject* obs, GameObject* o);
+	virtual void onObstacleStateChange(GameObject* obs, bool state);
 
 
 private:
