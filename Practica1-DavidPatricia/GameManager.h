@@ -8,6 +8,8 @@
 #include "Font.h"
 #include "Texture.h"
 #include "TimedObstacleObserver.h"
+#include "RectRender.h"
+
 
 class GameManager : public GameObject, public BallObserver, public TimedObstacleObserver {
 
@@ -41,6 +43,7 @@ private:
 	Music* boo;
 	Music* cheers;
 	Music* beat;
+	Music* careless;
 	bool pausa;
 	int score1, score2;
 	std::vector<GameStateObserver*> observers;
@@ -48,6 +51,8 @@ private:
 	GameObject* rPaddle;
 	GameObject* last_paddle_hit_;
 	bool paredrch, paredizq;
+	void finPartida();
+	RenderComponent* powerup;
 
 };
 
