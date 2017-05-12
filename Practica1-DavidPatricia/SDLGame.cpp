@@ -13,7 +13,7 @@ std::vector<std::pair<std::string, int>> SDLGame::fontFiles_ { {
 				"./fonts/Capture_it.ttf", 16 }, { "./fonts/Capture_it.ttf", 24 } };
 
 std::vector<std::string> SDLGame::musicFiles_ { "./sounds/beat.wav",
-"./sounds/cheer.wav", "./sounds/boooo.wav" };
+"./sounds/cheer.wav", "./sounds/boooo.wav", "./sounds/careless.wav" };
 
 std::vector<std::string> SDLGame::soundEffectFiles_ { "./sounds/wall_hit.wav",
 "./sounds/paddle_hit.wav" };

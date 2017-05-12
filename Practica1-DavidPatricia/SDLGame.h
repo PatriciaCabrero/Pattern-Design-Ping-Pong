@@ -35,7 +35,7 @@ public:
 	// Music -- each file is loaded as an instance of Music
 	//
 	enum MusicIds {
-		Beat, Cheer, Boooo
+		Beat, Cheer, Boooo, Careless
 	};
 
 	static std::vector<std::string> musicFiles_;

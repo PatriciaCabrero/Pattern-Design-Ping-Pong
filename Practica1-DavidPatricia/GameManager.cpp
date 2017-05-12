@@ -21,10 +21,10 @@ GameManager::GameManager(SDLGame* game,GameObject* lPaddle, GameObject* rPaddle)
 	boo = game->getResources()->getMusic(SDLGame::Boooo);
 	cheers = game->getResources()->getMusic(SDLGame::Cheer);
 	beat = game->getResources()->getMusic(SDLGame::Beat);
-	//careless = game->getResources()->getMusic(SDLGame::Beat);
+	careless = game->getResources()->getMusic(SDLGame::Careless);
 	SDL_Color rojo = { 255, 0, 0, 255 };
 	powerup = new RectRender(rojo);
-	width_ = 20;
+	width_ = 5;
 	height_ = getGame()->getWindowHeight();
 
 }
@@ -96,10 +96,11 @@ void GameManager::onBorderExit(GameObject* ball, BallObserver::EXIT_SIDE side) {
 			score1++;
 			cheers->play(1);
 			finPartida();
-		} else 
-		
+		}
+		else wallHit->play();
 	}
 }
+
 void GameManager::finPartida(){
 	pausa = true;
 	startMsgTexture_.loadFromText(getGame()->getRenderer(),
@@ -140,11 +141,13 @@ void GameManager::registerGameStateObserver(GameStateObserver* o) {
 void GameManager::onObstacleCollision(GameObject* obs, GameObject* o){
 	if (last_paddle_hit_ == lPaddle) paredizq = true;
 	else if (last_paddle_hit_ == rPaddle) paredrch = true;
-}//Falta cambiarlo a FALSE
+	careless->play(1);
+}
 
 void GameManager::onObstacleStateChange(GameObject* obs, bool state){
 	if (!obs->isActive()) {
 		paredizq = paredrch = false;
+		careless->pause();
 	}
 }
 /*Cambia la clase GameManager ​para que sea un TimedObstacleObserver. ​Cada vez que reciba un

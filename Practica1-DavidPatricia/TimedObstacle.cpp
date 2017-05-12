@@ -92,7 +92,7 @@ Vector2D<int> TimedObstacle::posAleatoria(){
 	aux.setX(ball->getGame()->getWindowHeight()* ((float)(rand() % 100) / 100));
 	aux.setY(ball->getGame()->getWindowWidth()* ((float)(rand() % 100) / 100));
 
-	while (aux.getX() > ball->getGame()->getWindowHeight() - 20 || aux.getX()< 20){
+	while (aux.getX() > ball->getGame()->getWindowHeight() - 50 || aux.getX()< 50){
 		aux.setX(ball->getGame()->getWindowHeight()* ((float)(rand() % 100) / 100));
 	}
 	return aux;

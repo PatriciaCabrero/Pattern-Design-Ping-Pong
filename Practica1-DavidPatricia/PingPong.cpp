@@ -96,25 +96,26 @@ void PingPong::initGame() {
 	leftPcompSw_->addMode(nullptr, aiPaddlePhysics_, rectangleRenderer_, brainRend_);
 	leftPcompSw_->setMode(0);
 
-	// game manager
-	gameManager_ = new GameManager(this, left_paddle_, right_paddle_);
-	pingPongPhysics_->resgisterBallObserver(gameManager_);
-	gameManager_->registerGameStateObserver(pingPongPhysics_);
-	actors_.push_back(left_paddle_);
-	actors_.push_back(right_paddle_);
-	actors_.push_back(ball_);
-	actors_.push_back(gameManager_);
-	actors_.push_back(rightPcompSw_);
-	actors_.push_back(leftPcompSw_);
-
 	//obstacle
 	obstacle = new TimedObstacle(this,5000,10000,ball_);
 	obstacle->setWidth(50);
 	obstacle->setHeight(50);
-	obstacle->addObserver(gameManager_);
-	actors_.push_back(obstacle);
 
+	// game manager
+	gameManager_ = new GameManager(this, left_paddle_, right_paddle_);
+	pingPongPhysics_->resgisterBallObserver(gameManager_);
+	gameManager_->registerGameStateObserver(pingPongPhysics_);
 	gameManager_->registerGameStateObserver(obstacle);
+	obstacle->addObserver(gameManager_);
+
+	actors_.push_back(left_paddle_);
+	actors_.push_back(right_paddle_);
+	actors_.push_back(ball_);
+	actors_.push_back(obstacle);
+	actors_.push_back(gameManager_);
+	actors_.push_back(rightPcompSw_);
+	actors_.push_back(leftPcompSw_);
+
 }
 
 void PingPong::closeGame() {
