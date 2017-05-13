@@ -90,7 +90,7 @@ void TimedObstacle::render(){
 Vector2D<int> TimedObstacle::posAleatoria(){
 	Vector2D<int> aux;
 	aux.setX(ball->getGame()->getWindowHeight()* ((float)(rand() % 100) / 100));
-	aux.setY(ball->getGame()->getWindowWidth()* ((float)(rand() % 100) / 100));
+	aux.setY((ball->getGame()->getWindowWidth()-height_)* ((float)(rand() % 100) / 100));
 
 	while (aux.getX() > ball->getGame()->getWindowHeight() - 50 || aux.getX()< 50){
 		aux.setX(ball->getGame()->getWindowHeight()* ((float)(rand() % 100) / 100));
@@ -117,22 +117,3 @@ bool TimedObstacle::compCollision(){
 		return true;
 	else return false;
 }
-
-/*1. Si el juego está en marcha, cada pTime milisegundos si el valor de rand()%2 es cero se activa el
-obstáculo para un periodo de dTime milisegundos. Cuando el juego está parado el obstáculo tiene
-que ser inactivo y invisible. Observe que la clase TimedObstacle es un GameStateObserver
-para poder saber si el juego está en marcha.
-
-2. Cuando se activa el obstáculo se tiene que mostrar un gráfico correspondiente y avisar a los
-observadores con un mensaje adecuado. La posición del obstáculo se elige de manera aleatoria cada
-vez que se activa --- mejor colocarlo un poco lejos de las raquetas, hacia el centro. Puedes usar
-cualquier imagen o simplemente un rectángulo para dibujar el obstáculo.
-
-3. Cuando pasan dTime milisegundos (desde la activación) se tiene que ocultar y desactivar el
-obstáculo y avisar a los observadores con un mensaje adecuado.
-
-4. Si la bola choca con el obstáculo mientras esté activo y visible se tiene que ocultar el obstáculo y
-avisar a los observadores con un mensaje adecuado. Observe que aunque se oculta, el obstáculo
-sigue activo para lo que queda de dTime​. No es obligatorio cambiar la dirección de la bola al chocar
-con el obstáculo, puedes hacerlo si quieres.
-*/

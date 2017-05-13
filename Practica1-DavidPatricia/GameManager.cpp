@@ -107,7 +107,11 @@ void GameManager::finPartida(){
 		"Press Space to Start", *font_, blanco);
 	puntuaciones.loadFromText(getGame()->getRenderer(),
 		std::to_string(score1) + " - " + std::to_string(score2), *font_, blanco);
-	paredizq =  paredrch = false;
+	if (paredizq || paredrch) {
+		careless->pause();
+		paredizq = paredrch = false;
+	}
+	//careless->pause();
 
 	if (score1 >= 5) {
 		beat->play(2);
@@ -150,13 +154,3 @@ void GameManager::onObstacleStateChange(GameObject* obs, bool state){
 		careless->pause();
 	}
 }
-/*Cambia la clase GameManager ​para que sea un TimedObstacleObserver. ​Cada vez que reciba un
-aviso que la bola ha chocado con el obstáculo, se tiene que “poner una pared” en el borde donde está el
-jugador que ha tocado la bola último. Eso evita que la bola salga de ese borde, es decir dando ventaja a
-ese jugador. Cuando se desactiva el obstáculo se tiene que quitar esa pared. Observe que la existencia de
-una pared simplemente se indica con una variable boolean en el GameManager y se usa para no parar el
-juego en ese caso, no hay que crear un nuevo objeto de juego que representa la pared, etc.
-Para indicar la existencia de una pared visualmente se puede dibujar una línea en el borde correspondiente
-o simplement mostrar un mensaje adecuado a lado del marcador, etc. Hay también que reproducir alguna
-música durante el tiempo en el que existe la pared.
-*/
